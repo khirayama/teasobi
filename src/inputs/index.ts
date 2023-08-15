@@ -16,7 +16,13 @@ export const sketch = (p: p5) => {
   }
 
   p.draw = () => {
-    // do something
+    if (p.keyIsPressed === true) {
+      p.fill(0);
+    } else {
+      p.fill(255);
+    }
+    p.rect(25, 25, 50, 50);
+    p.describe('50-by-50 white rect that turns black on keypress.');
   }
 };
 
