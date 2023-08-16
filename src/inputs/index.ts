@@ -13,16 +13,27 @@ document.body.style.margin = "0";
 export const sketch = (p: p5) => {
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
+    p.textSize(50);
   }
 
   p.draw = () => {
+    // p.background(200);
+
+    // keyboard
     if (p.keyIsPressed === true) {
       p.fill(0);
     } else {
       p.fill(255);
     }
-    p.rect(25, 25, 50, 50);
-    p.describe('50-by-50 white rect that turns black on keypress.');
+    p.text(p.key, 33, 65);
+
+    // mouse
+    if (p.mouseIsPressed) {
+      p.fill(0);
+    } else {
+      p.fill(255);
+    }
+    p.ellipse(p.mouseX, p.mouseY, 80, 80);
   }
 };
 
