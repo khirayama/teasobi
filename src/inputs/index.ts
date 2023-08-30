@@ -17,6 +17,7 @@ document.body.style.margin = "0";
 export const sketch = (p: p5) => {
   let img = null;
   let imageCORS = null;
+  let pressed = 0;
 
   p.preload = () => {
     imageCORS = new Image();
@@ -38,6 +39,19 @@ export const sketch = (p: p5) => {
     p.image(img, 160, 10, 150, 150);
 
     // keyboard
+    if (p.keyIsPressed === true && p.key == 'Escape') {
+      if (pressed === 0) {
+        pressed = Date.now();
+      } else {
+        const d = Date.now() - pressed;
+        if (d > 3000) {
+          console.log('end');
+        }
+      }
+    } else {
+      pressed = 0;
+    }
+
     if (p.keyIsPressed === true) {
       p.fill(0);
     } else {
