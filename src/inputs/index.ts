@@ -12,12 +12,15 @@ import p5 from 'p5';
  * - images
  */
 
-document.body.style.margin = "0";
+// document.body.requestFullscreen();
+// document.exitFullscreen();
 
 export const sketch = (p: p5) => {
   let img = null;
   let imageCORS = null;
-  let pressed = 0;
+  let isESCPressed = 0;
+  let exitTimerId = null;
+  let pressedTime = 0;
 
   p.preload = () => {
     imageCORS = new Image();
@@ -31,7 +34,19 @@ export const sketch = (p: p5) => {
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.textSize(50);
-     p.drawingContext.drawImage(imageCORS, 10, 10, 150, 150);
+    p.drawingContext.drawImage(imageCORS, 10, 10, 150, 150);
+    const button = p.createButton('click me');
+    button.position(0, 0);
+    button.mousePressed(() => {
+      pressedTime = Date.now();
+      exitTimerId = setTimeout(() => {
+        console.log('end!');
+      }, 3000);
+    });
+    button.mouseMoved(() => {
+      clearTimeout(exitTimerId);
+      exitTimerId = null;
+    });
   }
 
   p.draw = () => {
@@ -40,16 +55,21 @@ export const sketch = (p: p5) => {
 
     // keyboard
     if (p.keyIsPressed === true && p.key == 'Escape') {
-      if (pressed === 0) {
-        pressed = Date.now();
-      } else {
-        const d = Date.now() - pressed;
-        if (d > 3000) {
-          console.log('end');
-        }
+      if (isESCPressed === 0) {
+        exitTimerId = setTimeout(() => {
+          pressedTime = Date.now();
+          console.log('end!');
+        }, 3000);
       }
     } else {
-      pressed = 0;
+      clearTimeout(exitTimerId);
+      exitTimerId = null;
+    }
+
+    if (exitTimerId) {
+      p.fill(255);
+      p.fill(0);
+      p.text(Date.now() - pressedTime, 200, 200);
     }
 
     if (p.keyIsPressed === true) {
