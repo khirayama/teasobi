@@ -1,96 +1,110 @@
 import p5 from 'p5';
 
-/* inputs
- * - keyboard
- * - mouse
- * - touch
- * - pen
- * - camera
- * - mic
- * outputs
- * - render
- * - images
- */
+window.addEventListener('keydown', (e) => {
+  e.preventDefault();
+});
 
-// document.body.requestFullscreen();
-// document.exitFullscreen();
+window.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+});
+
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
 
 export const sketch = (p: p5) => {
-  let img = null;
-  let imageCORS = null;
-  let isESCPressed = 0;
-  let exitTimerId = null;
-  let pressedTime = 0;
+  const w = p.windowWidth;
+  const h = p.windowHeight;
 
-  p.preload = () => {
-    imageCORS = new Image();
-    imageCORS.src = 'https://placehold.jp/150x150.png';
-    imageCORS.width = 150;
-    imageCORS.height = 150;
-
-    img = p.loadImage('./150x150.png');
-  }
+  let circles = [];
 
   p.setup = () => {
-    p.createCanvas(p.windowWidth, p.windowHeight);
-    p.textSize(50);
-    p.drawingContext.drawImage(imageCORS, 10, 10, 150, 150);
-    const button = p.createButton('click me');
-    button.position(0, 0);
-    button.mousePressed(() => {
-      pressedTime = Date.now();
-      exitTimerId = setTimeout(() => {
-        console.log('end!');
-      }, 3000);
-    });
-    button.mouseMoved(() => {
-      clearTimeout(exitTimerId);
-      exitTimerId = null;
-    });
+    p.createCanvas(w, h);
   }
 
   p.draw = () => {
-    // p.background(200);
-    p.image(img, 160, 10, 150, 150);
+    p.background(200);
 
-    // keyboard
-    if (p.keyIsPressed === true && p.key == 'Escape') {
-      if (isESCPressed === 0) {
-        exitTimerId = setTimeout(() => {
-          pressedTime = Date.now();
-          console.log('end!');
-        }, 3000);
+    if (p.keyIsPressed) {
+      console.log(p.key);
+      let x = w / 2;
+      let y = h / 2;
+      if ('rtyu'.split('').includes(p.key.toLowerCase())) {
+        y -= h / 4;
+      } else if ('qwe'.split('').includes(p.key.toLowerCase())) {
+        x -= w / 4;
+        y -= h / 4;
+      } else if ('iop[]¥{}|'.split('').includes(p.key.toLowerCase())) {
+        x += w / 4;
+        y -= h / 4;
+      } else if ('asd'.split('').includes(p.key.toLowerCase())) {
+        x -= w / 4;
+      } else if ('kl;\':"'.split('').includes(p.key.toLowerCase())) {
+        x += w / 4;
+      } else if ('zxc'.split('').includes(p.key.toLowerCase())) {
+        x -= w / 4;
+        y += h / 4;
+      } else if ('vbn'.split('').includes(p.key.toLowerCase())) {
+        y += h / 4;
+      } else if ('m,./<>?'.split('').includes(p.key.toLowerCase())) {
+        x += w / 4;
+        y += h / 4;
       }
-    } else {
-      clearTimeout(exitTimerId);
-      exitTimerId = null;
+      const c = new Circle(p, x, y);
+      circles.push(c);
     }
 
-    if (exitTimerId) {
-      p.fill(255);
-      p.fill(0);
-      p.text(Date.now() - pressedTime, 200, 200);
-    }
-
-    if (p.keyIsPressed === true) {
-      p.fill(0);
-    } else {
-      p.fill(255);
-    }
-    p.text(p.key, 33, 65);
-
-    // mouse, and, pen
     if (p.mouseIsPressed) {
-      p.fill(0);
-    } else {
-      p.fill(255);
+      const c = new Circle(p, p.mouseX, p.mouseY);
+      circles.push(c);
     }
-    p.ellipse(p.mouseX, p.mouseY, 80, 80);
 
-    if (p.touches.length) {
-      console.log(p.touches);
+    for (let t of p.touches) {
+      const c = new Circle(p, t.x, t.y);
+      circles.push(c);
     }
+
+    circles.forEach((c) => {
+      c.update();
+      c.render();
+    });
+
+    circles = circles.filter((c) => !c.isEnd());
   }
 };
+
+class Circle {
+  private p: p5;
+
+  private x: number;
+
+  private y: number;
+
+  private d: number = 8;
+
+  private step: number = 0;
+
+  constructor(p: p5, x: number, y: number) {
+    this.p = p;
+    this.x = x;
+    this.y = y;
+  }
+
+  update() {
+    this.step += 1;
+    this.d += Math.max(80 / this.step, 1);
+  }
+
+  render() {
+    const c = this.p.color(0, 0, 0);
+    c.setAlpha(0);
+    this.p.fill(c)
+    this.p.circle(this.x, this.y, this.d);
+  }
+
+  isEnd() {
+    return this.step > 80;
+  }
+}
 
 new p5(sketch, document.body);
