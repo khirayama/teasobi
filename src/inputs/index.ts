@@ -26,7 +26,6 @@ export const sketch = (p: p5) => {
     p.background(200);
 
     if (p.keyIsPressed) {
-      console.log(p.key);
       let x = w / 2;
       let y = h / 2;
       if ('rtyu'.split('').includes(p.key.toLowerCase())) {
