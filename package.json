@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/**/*.html"
+    "dev": "parcel src/**/*.html",
+    "check": "npx -y npm-check-updates"
   },
   "keywords": [],
   "author": "",
