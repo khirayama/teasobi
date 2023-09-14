@@ -1,14 +1,14 @@
-import p5 from 'p5';
+import p5 from "p5";
 
-window.addEventListener('keydown', (e) => {
+window.addEventListener("keydown", (e) => {
   e.preventDefault();
 });
 
-window.addEventListener('touchstart', (e) => {
+window.addEventListener("touchstart", (e) => {
   e.preventDefault();
 });
 
-window.addEventListener('contextmenu', (e) => {
+window.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 });
 
@@ -20,7 +20,7 @@ export const sketch = (p: p5) => {
 
   p.setup = () => {
     p.createCanvas(w, h);
-  }
+  };
 
   p.draw = () => {
     p.background(200);
@@ -28,24 +28,24 @@ export const sketch = (p: p5) => {
     if (p.keyIsPressed) {
       let x = w / 2;
       let y = h / 2;
-      if ('rtyu'.split('').includes(p.key.toLowerCase())) {
+      if ("rtyu".split("").includes(p.key.toLowerCase())) {
         y -= h / 4;
-      } else if ('qwe'.split('').includes(p.key.toLowerCase())) {
+      } else if ("qwe".split("").includes(p.key.toLowerCase())) {
         x -= w / 4;
         y -= h / 4;
-      } else if ('iop[]¥{}|'.split('').includes(p.key.toLowerCase())) {
+      } else if ("iop[]¥{}|".split("").includes(p.key.toLowerCase())) {
         x += w / 4;
         y -= h / 4;
-      } else if ('asd'.split('').includes(p.key.toLowerCase())) {
+      } else if ("asd".split("").includes(p.key.toLowerCase())) {
         x -= w / 4;
-      } else if ('kl;\':"'.split('').includes(p.key.toLowerCase())) {
+      } else if ("kl;':\"".split("").includes(p.key.toLowerCase())) {
         x += w / 4;
-      } else if ('zxc'.split('').includes(p.key.toLowerCase())) {
+      } else if ("zxc".split("").includes(p.key.toLowerCase())) {
         x -= w / 4;
         y += h / 4;
-      } else if ('vbn'.split('').includes(p.key.toLowerCase())) {
+      } else if ("vbn".split("").includes(p.key.toLowerCase())) {
         y += h / 4;
-      } else if ('m,./<>?'.split('').includes(p.key.toLowerCase())) {
+      } else if ("m,./<>?".split("").includes(p.key.toLowerCase())) {
         x += w / 4;
         y += h / 4;
       }
@@ -69,7 +69,7 @@ export const sketch = (p: p5) => {
     });
 
     circles = circles.filter((c) => !c.isEnd());
-  }
+  };
 };
 
 class Circle {
@@ -97,7 +97,7 @@ class Circle {
   render() {
     const c = this.p.color(0, 0, 0);
     c.setAlpha(0);
-    this.p.fill(c)
+    this.p.fill(c);
     this.p.circle(this.x, this.y, this.d);
   }
 
