@@ -23,7 +23,7 @@ export const sketch = (p: p5) => {
   };
 
   p.draw = () => {
-    p.background(200);
+    // p.background(200);
 
     if (p.keyIsPressed) {
       let x = w / 2;
