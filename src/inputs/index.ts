@@ -58,7 +58,7 @@ export const sketch = (p: p5) => {
       circles.push(c);
     }
 
-    for (let t of p.touches) {
+    for (let t of p.touches as { x: number; y: number }[]) {
       const c = new Circle(p, t.x, t.y);
       circles.push(c);
     }
